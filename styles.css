@@ -28,7 +28,7 @@ body {
 .navbar {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
-    padding: 1.2rem 3rem;
+    padding: 1rem 2.5rem;               /* a bit more padding for a larger top bar */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,41 +37,74 @@ body {
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 76px;                        /* larger fixed height */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;        /* keeps logo from stretching */
 }
 
 .logo h2 {
     color: white;
-    font-size: 2rem;
+    font-size: clamp(1rem, 2.2vw, 1.8rem); /* slightly larger max size */
     font-weight: 700;
     letter-spacing: 1px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0;
+}
+
+/* tweak for very small screens */
+@media (max-width: 420px) {
+    .logo h2 {
+        font-size: 1rem;
+    }
 }
 
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 2.5rem;
+    gap: 1.4rem;                         /* tighter gap for a compact top bar */
+    align-items: center;                 /* center nav items vertically */
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    list-style: none;
+    display: flex;
+    align-items: center;                 /* ensure each list item is centered */
 }
 
 .nav-links a {
     color: white;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 500;
     position: relative;
-    padding: 0.5rem 0;
-    transition: all 0.3s ease;
+    padding: 0.45rem 0;                  /* slightly larger vertical padding */
+    transition: color 0.22s ease, transform 120ms ease;
+    display: inline-flex;
+    align-items: center;                 /* keep link content vertically aligned */
+    gap: 0.35rem;
 }
 
 .nav-links a::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -8px;                        /* positioned under the larger bar */
     left: 0;
     width: 0;
     height: 2px;
     background: #fff;
-    transition: width 0.3s ease;
+    transition: width 0.2s ease;
+}
+
+/* expand underline on hover */
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 .nav-links a:hover {
@@ -79,8 +112,95 @@ body {
     transform: translateY(-2px);
 }
 
-.nav-links a:hover::after {
+.dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+
+.dropdown-content {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translate(-50%, -6px);
+    background-color: #ffffffe1;
+    min-width: 150px;                     /* consistent width */
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.12);
+    z-index: 2000;
+    border-radius: 12px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
+    display: block;
+}
+
+/* Reveal centered dropdown smoothly */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* Make each dropdown row span full width and center its text; equal padding */
+.dropdown-content a {
+    display: block;
     width: 100%;
+    box-sizing: border-box;
+    padding: 12px 18px;
+    color: #222;
+    text-decoration: none;
+    text-align: center;                   /* center contents */
+    font-size: 1rem;
+}
+
+/* Change the entire row background (full width) on hover */
+.dropdown-content a:hover {
+    background-color: #6221d2c3;
+}
+
+/* Remove underline pseudo-element for dropdown items */
+.dropdown-content a::after {
+    display: none;
+}
+
+/* ensure list items inside dropdown have no extra spacing */
+.dropdown-content li {
+    list-style: none;
+}
+
+/* Profile image + label styling */
+.nav-links .profile a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: inherit;
+    padding-left: 6px;
+}
+
+.profile-pic {
+    width: 40px;                         /* slightly larger and consistent */
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+    vertical-align: middle;
+    border: 2px solid rgba(255,255,255,0.15);
+}
+
+.profile-text {
+    font-size: 0.98rem;
+    display: inline-block;
+    line-height: 1;
+}
+
+/* Optional: slightly larger on hover */
+.nav-links .profile a:hover .profile-pic {
+    transform: scale(1.06);
+    transition: transform 140ms ease-in-out;
 }
 
 .main-content {
@@ -155,40 +275,4 @@ body {
         font-size: 1.1rem;
         padding: 0 1rem;
     }
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(118, 79, 79, 0.2);
-    z-index: 1;
-    border-radius: 4px;
-    ;
-}
-
-.dropdown-content li {
-    display: block;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content a:hover {
-    background-color: #7F00FF;
-    border-radius: 4px;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
 }
